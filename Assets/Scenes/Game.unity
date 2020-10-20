@@ -265,33 +265,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!1 &516128266 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7727117711298921202, guid: effa294cd00b9ad44a68060f9ff895b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1148096555037114751}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &516128271
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516128266}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &636484833
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,24 +596,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4101625419201986157, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6884272568539006337, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7727117711298921202, guid: effa294cd00b9ad44a68060f9ff895b6,
         type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7727117711298921202, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7727117711298921204, guid: effa294cd00b9ad44a68060f9ff895b6,
@@ -697,21 +655,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7727117711298921206, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: lives
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7925252652453920353, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8508768857942856027, guid: effa294cd00b9ad44a68060f9ff895b6,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: effa294cd00b9ad44a68060f9ff895b6, type: 3}

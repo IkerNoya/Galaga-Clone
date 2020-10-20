@@ -168,7 +168,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.03
+      value: 0.0001
       mode: 0
       spread: 0
       speed:
@@ -4766,9 +4766,10 @@ GameObject:
   - component: {fileID: 7727117711298921203}
   - component: {fileID: 7727117711298921206}
   - component: {fileID: 7727117711298921205}
+  - component: {fileID: 516128271}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4852,7 +4853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  lives: 0
+  lives: 3
   InitialPos: {x: -0.05, y: -3.61, z: -1}
   bullet: {fileID: 7708824337386718866, guid: 945f0999f651181469c742cfee6b55aa, type: 3}
   FireButton: 32
@@ -4886,6 +4887,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.886704, y: 1.6312345}
   m_EdgeRadius: 0
+--- !u!50 &516128271
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727117711298921202}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &7925252652453920353
 GameObject:
   m_ObjectHideFlags: 0
@@ -4897,7 +4919,7 @@ GameObject:
   - component: {fileID: 1031198871668955902}
   m_Layer: 0
   m_Name: Gun Right
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4928,7 +4950,7 @@ GameObject:
   - component: {fileID: 9099523765208302979}
   m_Layer: 0
   m_Name: Gun Left
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5116,7 +5138,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5694,7 +5716,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.03
+      value: 0.0001
       mode: 0
       spread: 0
       speed:

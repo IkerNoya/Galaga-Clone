@@ -6,6 +6,7 @@ public class EnemyShip : MonoBehaviour
 {
     [SerializeField] GameObject gun;
     [SerializeField] Bullet bullet;
+    [SerializeField] ParticleSystem muzzle;
     float timer = 0;
     float timeLimit = 1.5f;
 
@@ -21,6 +22,7 @@ public class EnemyShip : MonoBehaviour
         {
             timer = 0;
             bullet.GetComponent<Bullet>().SetUser(Bullet.User.enemy);
+            muzzle.Play();
             Instantiate(bullet, gun.transform.position, Quaternion.identity);
         }
     }
