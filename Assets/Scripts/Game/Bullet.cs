@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float speed;
+    float extraSpeed = 1;
     Vector3 direction;
     public enum User
     {
@@ -13,10 +14,18 @@ public class Bullet : MonoBehaviour
     public User user;
     void Start()
     {
-        if (user == User.player)
-            direction = Vector3.up;
-        if (user == User.enemy)
-            direction = Vector3.down;
+        switch (user)
+        {
+            case User.player:
+                speed += extraSpeed;
+                direction = Vector3.up;
+                break;
+            case User.enemy:
+                direction = Vector3.down;
+                GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+        }
+        
         Destroy(gameObject, 1f);
     }
 
