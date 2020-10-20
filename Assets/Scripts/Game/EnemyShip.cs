@@ -9,22 +9,27 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] Bullet bullet;
     [SerializeField] ParticleSystem muzzle;
     [SerializeField] float speed;
+    [SerializeField] float parabolicMagnitude;
     [SerializeField] GameObject[] spawners;
-    SpriteRenderer sr;
+    GameObject player;
     float timer = 0;
     float timeLimit = 1.5f;
+    bool canRespawn;
+    int lastSpawnPoint;
     Vector3 direction;
 
     // Update is called once per frame
     void Start()
     {
         spawners = GameObject.FindGameObjectsWithTag("Spawners");
+        player = GameObject.FindGameObjectWithTag("Player");
         Respawn();
     }
     void Update()
     {
         //parabola 
         direction = Vector3.down;
+        direction = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad * parabolicMagnitude), direction.y, 0);
 
         transform.position += direction * speed * Time.deltaTime; 
         timer += Time.deltaTime;
@@ -35,11 +40,29 @@ public class EnemyShip : MonoBehaviour
             muzzle.Play();
             Instantiate(bullet, gun.transform.position, Quaternion.identity);
         }
+        if (transform.position.y < player.transform.position.y) canRespawn = true;
+        else canRespawn = false;
     }
     void Respawn()
     {
-        if(spawners!=null)
-            transform.position = spawners[Random.Range(0, 3)].transform.position;
+        if (spawners != null)
+        {
+            int spawn = Random.Range(0, 3);
+            if (lastSpawnPoint != spawn)
+            {
+                transform.position = spawners[spawn].transform.position;
+                lastSpawnPoint = spawn;
+            }
+            else
+            {
+                if (spawn >= 3)
+                    spawn--;
+                else if (spawn <= 0)
+                    spawn++;
+                transform.position = spawners[spawn].transform.position;
+                lastSpawnPoint = spawn;
+            }
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,6 +74,6 @@ public class EnemyShip : MonoBehaviour
     }
     private void OnBecameInvisible()
     {
-        Respawn();
+        if (canRespawn) Respawn();
     }
 }
