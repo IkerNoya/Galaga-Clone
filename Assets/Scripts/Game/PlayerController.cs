@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [Space]
     [SerializeField] GameObject gunLeft;
     [SerializeField] GameObject gunRight;
+    [SerializeField] ParticleSystem muzzleLeft;
+    [SerializeField] ParticleSystem muzzleRight;
     Vector3 movement;
 
     void Start()
@@ -32,10 +34,16 @@ public class PlayerController : MonoBehaviour
             if (bullet != null)
             {
                 bullet.GetComponent<Bullet>().SetUser(Bullet.User.player);
-                if (gunLeft!=null)
+                if (gunLeft != null && muzzleLeft != null)
+                {
                     Instantiate(bullet, gunLeft.transform.position, Quaternion.identity);
-                if(gunRight!=null)
+                    muzzleLeft.Play();
+                }
+                if (gunRight != null && muzzleRight != null)
+                {
                     Instantiate(bullet, gunRight.transform.position, Quaternion.identity);
+                    muzzleRight.Play();
+                }
             }
         }
     }
