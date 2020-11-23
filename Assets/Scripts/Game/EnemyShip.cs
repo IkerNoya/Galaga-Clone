@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class EnemyShip : MonoBehaviour
@@ -11,6 +12,12 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
     [SerializeField] GameObject[] spawners;
+    public enum Type
+    {
+       Common, Agile, Hive
+    }
+    public Type type;
+
     GameObject player;
     float timer = 0;
     float timeLimit = 1.5f;
@@ -27,21 +34,41 @@ public class EnemyShip : MonoBehaviour
     }
     void Update()
     {
-        //parabola 
-        direction = Vector3.down;
-        direction = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad * parabolicMagnitude), direction.y, 0);
-
-        transform.position += direction * speed * Time.deltaTime; 
-        timer += Time.deltaTime;
-        if (timer >= timeLimit)
+        switch (type)
         {
-            timer = 0;
-            bullet.GetComponent<Bullet>().SetUser(Bullet.User.enemy);
-            muzzle.Play();
-            Instantiate(bullet, gun.transform.position, Quaternion.identity);
+            case Type.Common:
+                //parabola 
+                direction = Vector3.down;
+                transform.position += direction * speed * Time.deltaTime;
+                timer += Time.deltaTime;
+                if (timer >= timeLimit)
+                {
+                    timer = 0;
+                    bullet.GetComponent<Bullet>().SetUser(Bullet.User.enemy);
+                    muzzle.Play();
+                    Instantiate(bullet, gun.transform.position, Quaternion.identity);
+                }
+                if (transform.position.y < player.transform.position.y) canRespawn = true;
+                else canRespawn = false;
+                break;
+            case Type.Agile:
+                direction = Vector3.down;
+                direction = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad * parabolicMagnitude), direction.y, 0);
+                transform.position += direction * speed * Time.deltaTime;
+                if (transform.position.y < player.transform.position.y) canRespawn = true;
+                else canRespawn = false;
+                break;
+            case Type.Hive:
+                direction = Vector3.down;
+                direction = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad * parabolicMagnitude), direction.y, 0);
+                transform.position += direction * speed * Time.deltaTime;
+                if (transform.position.y < player.transform.position.y) canRespawn = true;
+                else canRespawn = false;
+                break;
+            default:
+                break;
         }
-        if (transform.position.y < player.transform.position.y) canRespawn = true;
-        else canRespawn = false;
+       
     }
     void Respawn()
     {

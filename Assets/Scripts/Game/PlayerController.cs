@@ -49,9 +49,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy)
+        if((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("HOLA");
             lives--;
             Destroy(collision.gameObject);
         }
