@@ -4769,7 +4769,7 @@ GameObject:
   - component: {fileID: 465649533}
   m_Layer: 0
   m_Name: Enemy-common
-  m_TagString: Enemy
+  m_TagString: Enemy_Common
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4880,6 +4880,10 @@ MonoBehaviour:
   gun: {fileID: 7377860637182731761}
   bullet: {fileID: 5003715092121992825, guid: 945f0999f651181469c742cfee6b55aa, type: 3}
   muzzle: {fileID: 3366708579526132301}
+  speed: 0
+  parabolicMagnitude: 0
+  spawners: []
+  type: 0
 --- !u!50 &465649533
 Rigidbody2D:
   serializedVersion: 4

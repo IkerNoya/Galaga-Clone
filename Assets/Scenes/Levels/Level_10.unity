@@ -536,6 +536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469279616}
   - component: {fileID: 469279617}
+  - component: {fileID: 469279618}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -573,13 +574,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 7
+  PlanetOffset: 3
   Spawners:
   - {fileID: 1652060947}
   - {fileID: 158064840}
   - {fileID: 616529838}
   bluePlanet: {fileID: 1640115453}
   pinkPlanet: {fileID: 1427744588}
-  PlanetOffset: 3
+--- !u!114 &469279618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469279615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ca01f7530d2f84392df83445fc5f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - name: Common
+    prefab: {fileID: 0}
+    size: 5
+  - name: Erratic
+    prefab: {fileID: 0}
+    size: 5
 --- !u!1 &516129735
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,36 +11,60 @@ public class LevelManager : MonoBehaviour
     [SerializeField] List<Transform> Spawners;
     [SerializeField] GameObject bluePlanet;
     [SerializeField] GameObject pinkPlanet;
+    GameObject[] commonEnemies;
+    GameObject[] erraticEnemies;
     GameObject player;
     GameObject cam;
+    int enemyCount;
     Vector3 camHeight;
     void Start()
     {
         cam = Camera.main.gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
+        commonEnemies = GameObject.FindGameObjectsWithTag("Enemy_Common");
+        erraticEnemies = GameObject.FindGameObjectsWithTag("Enemy_Erratic");
+        enemyCount = erraticEnemies.Length + commonEnemies.Length;
+        for(int i = 0; i < commonEnemies.Length; i++)
+        {
+            commonEnemies[i].SetActive(false);
+        }
+        for(int i = 0; i < erraticEnemies.Length; i++)
+        {
+            erraticEnemies[i].SetActive(false);
+        }
     }
     void Update()
     {
         transform.position = new Vector3(transform.position.x, cam.transform.position.y + camHeight.y + offset, transform.position.z);
-        if(bluePlanet != null && pinkPlanet != null && player != null)
+
+        PlanetParallax();
+    }
+    void PlanetParallax()
+    {
+        if (bluePlanet != null && pinkPlanet != null && player != null)
         {
             int blueIndex = Random.Range(0, Spawners.Count);
             int pinkIndex = Random.Range(0, Spawners.Count);
             if (!bluePlanet.GetComponent<Renderer>().isVisible && player.transform.position.y > bluePlanet.transform.position.y)
             {
-                if(blueIndex==pinkIndex)
+                if (blueIndex == pinkIndex)
                     blueIndex = Random.Range(0, Spawners.Count);
 
                 bluePlanet.transform.position = new Vector3(Spawners[blueIndex].position.x, Spawners[blueIndex].position.y + Random.Range(0, PlanetOffset), Spawners[blueIndex].position.z);
             }
             if (!pinkPlanet.GetComponent<Renderer>().isVisible && player.transform.position.y > pinkPlanet.transform.position.y)
             {
-                if(pinkIndex==blueIndex)
+                if (pinkIndex == blueIndex)
                     pinkIndex = Random.Range(0, Spawners.Count);
-                   
+
                 pinkPlanet.transform.position = new Vector3(Spawners[pinkIndex].position.x, Spawners[pinkIndex].position.y + Random.Range(0, PlanetOffset), Spawners[pinkIndex].position.z);
             }
         }
+    }
+
+    public int GetEnemyCount()
+    {
+        return enemyCount;
     }
     
 }

@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy"))
+        if((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy_Common") || collision.gameObject.CompareTag("Enemy_Erratic"))
         {
             lives--;
             Destroy(collision.gameObject);

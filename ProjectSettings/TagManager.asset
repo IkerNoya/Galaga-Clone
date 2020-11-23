@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
   - Bullet
   - Spawners
+  - Enemy_Common
+  - Enemy_Erratic
+  - Enemy
   layers:
   - Default
   - TransparentFX
