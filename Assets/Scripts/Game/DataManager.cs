@@ -9,10 +9,16 @@ public class DataManager : MonoBehaviour
     int score;
     void Awake()
     {
-        if (instance == null)
+        //ñ
+        if (instance == null) 
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else if (instance != null)
-            Destroy(gameObject);
+             Destroy(gameObject);
+        
+    
     }
     public void SetScore(int value)
     {
