@@ -8,7 +8,6 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] ParticleSystem muzzle;
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
-    [SerializeField] GameObject[] spawners;
     public static event Action<EnemyShip> onDestroy;
     public enum Type
     {
@@ -26,9 +25,7 @@ public class EnemyShip : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        spawners = GameObject.FindGameObjectsWithTag("Spawners");
         player = GameObject.FindGameObjectWithTag("Player");
-        Respawn();
     }
     void Update()
     {
@@ -68,27 +65,6 @@ public class EnemyShip : MonoBehaviour
         }
        
     }
-    void Respawn()
-    {
-        if (spawners != null)
-        {
-            int spawn = UnityEngine.Random.Range(0, 3);
-            if (lastSpawnPoint != spawn)
-            {
-                transform.position = spawners[spawn].transform.position;
-                lastSpawnPoint = spawn;
-            }
-            else
-            {
-                if (spawn >= 3)
-                    spawn--;
-                else if (spawn <= 0)
-                    spawn++;
-                transform.position = spawners[spawn].transform.position;
-                lastSpawnPoint = spawn;
-            }
-        }
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.player)
@@ -96,5 +72,13 @@ public class EnemyShip : MonoBehaviour
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }
+        if (collision.gameObject.CompareTag("KillZone"))
+        {
+            Destroy(gameObject);
+        }
+    }
+    private void OnDestroy()
+    {
+        onDestroy?.Invoke(this);
     }
 }

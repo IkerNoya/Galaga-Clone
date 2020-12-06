@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         lManager = FindObjectOfType<LevelManager>();
+        EnemyShip.onDestroy += DestroyEnemy;
     }
 
     void Update()
@@ -23,7 +25,7 @@ public class GameManager : MonoBehaviour
         {
             if (enemyCount > 0)
             {
-                Instantiate(enemies[Random.Range(0, 1)], lManager.Spawners[Random.Range(0, 2)]);
+                Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
                 enemyCount--;
                 liveEnemies++;
                 timer = 0;
@@ -31,4 +33,13 @@ public class GameManager : MonoBehaviour
         }
         timer += Time.deltaTime;
     }
+    void DestroyEnemy(EnemyShip es)
+    {
+        liveEnemies--;
+    }
+    private void OnDisable()
+    {
+        EnemyShip.onDestroy -= DestroyEnemy;
+    }
+
 }

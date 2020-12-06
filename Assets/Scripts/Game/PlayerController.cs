@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Timeline;
 
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D collider;
     Vector3 movement;
     Camera cam;
+
     float colliderHalfWidth;
     float colliderHalfHeight;
     float rightScreenPos;
@@ -28,6 +32,9 @@ public class PlayerController : MonoBehaviour
     float topScreenPos;
     float bottomScreenPos;
 
+    int maxLives;
+
+    bool canTakeDamage = true;
     void Start()
     {
         cam = Camera.main;
@@ -39,7 +46,7 @@ public class PlayerController : MonoBehaviour
         }
         rightScreenPos = cam.ViewportToWorldPoint(Vector3.right).x;
         leftightScreenPos = cam.ViewportToWorldPoint(Vector3.zero).x;
-
+        maxLives = lives;
     }
     void Update()
     {
@@ -84,10 +91,44 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy_Common") || collision.gameObject.CompareTag("Enemy_Erratic"))
+        if(((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy_Common") || collision.gameObject.CompareTag("Enemy_Erratic")) && canTakeDamage)
         {
+            canTakeDamage = false;
             lives--;
+            StartCoroutine(FlashColors(5));
             Destroy(collision.gameObject);
         }
+    }
+    public float currentHealthPercentage(int value)
+    {
+        int maxHealth = 100;
+        int maxPercentage = 100;
+        return ((value * maxPercentage) / maxHealth);
+    }
+    public int GetLives()
+    {
+        return lives;
+    }
+    public int GetMaxLives()
+    {
+        return maxLives;
+    }
+    IEnumerator FlashColors(int times)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        var alpha = sr.color;
+        for (int i = 0; i < times; i++)
+        {
+            alpha.a = 1;
+            GetComponent<SpriteRenderer>().color = alpha;
+            yield return new WaitForSeconds(0.1f);
+            alpha.a = 0;
+            GetComponent<SpriteRenderer>().color = alpha;
+            yield return new WaitForSeconds(0.1f);
+        }
+        alpha.a = 1;
+        GetComponent<SpriteRenderer>().color = alpha;
+        canTakeDamage = true;
+        yield return null;
     }
 }
