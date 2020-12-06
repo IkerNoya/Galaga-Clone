@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     int maxLives;
 
     bool canTakeDamage = true;
+
+    public static event Action<PlayerController> gameOver;
     void Start()
     {
         cam = Camera.main;
@@ -95,6 +97,8 @@ public class PlayerController : MonoBehaviour
         {
             canTakeDamage = false;
             lives--;
+            if (lives <= 0)
+                gameOver?.Invoke(this);
             StartCoroutine(FlashColors(5));
             Destroy(collision.gameObject);
         }

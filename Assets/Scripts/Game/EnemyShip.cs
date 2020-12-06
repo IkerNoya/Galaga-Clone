@@ -9,6 +9,7 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
     public static event Action<EnemyShip> onDestroy;
+    public static event Action<EnemyShip> killedByPlayer;
     public enum Type
     {
        Common, Agile, Hive
@@ -69,16 +70,14 @@ public class EnemyShip : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.player)
         {
+            killedByPlayer?.Invoke(this);
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }
-        if (collision.gameObject.CompareTag("KillZone"))
+        if (collision.gameObject.CompareTag("KillZone") || collision.gameObject.CompareTag("Player"))
         {
+            onDestroy?.Invoke(this);
             Destroy(gameObject);
         }
-    }
-    private void OnDestroy()
-    {
-        onDestroy?.Invoke(this);
     }
 }
