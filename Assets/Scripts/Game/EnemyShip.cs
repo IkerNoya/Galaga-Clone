@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditorInternal;
+﻿using System;
 using UnityEngine;
 
 public class EnemyShip : MonoBehaviour
@@ -12,6 +9,7 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
     [SerializeField] GameObject[] spawners;
+    public static event Action<EnemyShip> onDestroy;
     public enum Type
     {
        Common, Agile, Hive
@@ -37,7 +35,6 @@ public class EnemyShip : MonoBehaviour
         switch (type)
         {
             case Type.Common:
-                //parabola 
                 direction = Vector3.down;
                 transform.position += direction * speed * Time.deltaTime;
                 timer += Time.deltaTime;
@@ -52,6 +49,7 @@ public class EnemyShip : MonoBehaviour
                 else canRespawn = false;
                 break;
             case Type.Agile:
+                //parabola 
                 direction = Vector3.down;
                 direction = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad * parabolicMagnitude), direction.y, 0);
                 transform.position += direction * speed * Time.deltaTime;
@@ -74,7 +72,7 @@ public class EnemyShip : MonoBehaviour
     {
         if (spawners != null)
         {
-            int spawn = Random.Range(0, 3);
+            int spawn = UnityEngine.Random.Range(0, 3);
             if (lastSpawnPoint != spawn)
             {
                 transform.position = spawners[spawn].transform.position;
@@ -98,9 +96,5 @@ public class EnemyShip : MonoBehaviour
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }
-    }
-    private void OnBecameInvisible()
-    {
-        if (canRespawn) Respawn();
     }
 }

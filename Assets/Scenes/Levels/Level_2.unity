@@ -596,10 +596,10 @@ MonoBehaviour:
   pools:
   - name: Common
     prefab: {fileID: 0}
-    size: 5
+    size: 10
   - name: Erratic
     prefab: {fileID: 0}
-    size: 5
+    size: 7
 --- !u!1 &516129735
 GameObject:
   m_ObjectHideFlags: 0

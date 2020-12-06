@@ -8,11 +8,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] float offset;
     [SerializeField] float PlanetOffset;
     [Space]
-    [SerializeField] List<Transform> Spawners;
     [SerializeField] GameObject bluePlanet;
     [SerializeField] GameObject pinkPlanet;
-    GameObject[] commonEnemies;
-    GameObject[] erraticEnemies;
+    [Space]
+    public List<Transform> Spawners;
+
     GameObject player;
     GameObject cam;
     int enemyCount;
@@ -21,17 +21,6 @@ public class LevelManager : MonoBehaviour
     {
         cam = Camera.main.gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
-        commonEnemies = GameObject.FindGameObjectsWithTag("Enemy_Common");
-        erraticEnemies = GameObject.FindGameObjectsWithTag("Enemy_Erratic");
-        enemyCount = erraticEnemies.Length + commonEnemies.Length;
-        for(int i = 0; i < commonEnemies.Length; i++)
-        {
-            commonEnemies[i].SetActive(false);
-        }
-        for(int i = 0; i < erraticEnemies.Length; i++)
-        {
-            erraticEnemies[i].SetActive(false);
-        }
     }
     void Update()
     {
