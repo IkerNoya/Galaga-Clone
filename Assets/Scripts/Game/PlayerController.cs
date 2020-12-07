@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject gunRight;
     [SerializeField] ParticleSystem muzzleLeft;
     [SerializeField] ParticleSystem muzzleRight;
+    [SerializeField] TrailRenderer trailLeft;
+    [SerializeField] TrailRenderer trailRight;
 
     BoxCollider2D collider;
     Vector3 movement;
@@ -62,9 +64,17 @@ public class PlayerController : MonoBehaviour
 
         //limit movement in x
         if(transform.position.x - colliderHalfWidth > rightScreenPos)
+        {
             transform.position = new Vector3(leftightScreenPos - colliderHalfWidth, transform.position.y, transform.position.z);
+            trailLeft.Clear();
+            trailRight.Clear();
+        }
         else if(transform.position.x + colliderHalfWidth < leftightScreenPos)
+        {
             transform.position = new Vector3(rightScreenPos + colliderHalfWidth, transform.position.y, transform.position.z);
+            trailLeft.Clear();
+            trailRight.Clear();
+        }
         //limit movement in y
         if (transform.position.y + colliderHalfHeight >= topScreenPos)
             transform.position = new Vector3(transform.position.x, topScreenPos - colliderHalfHeight, transform.position.z);
@@ -93,7 +103,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.enemy) || collision.gameObject.CompareTag("Enemy_Common") || collision.gameObject.CompareTag("Enemy_Erratic")) && canTakeDamage)
+        if(((collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() != Bullet.User.player) || collision.gameObject.CompareTag("Enemy_Common") || collision.gameObject.CompareTag("Enemy_Erratic")) && canTakeDamage || collision.gameObject.CompareTag("Enemy_Boss"))
         {
             canTakeDamage = false;
             lives--;
@@ -135,4 +145,5 @@ public class PlayerController : MonoBehaviour
         canTakeDamage = true;
         yield return null;
     }
+ 
 }

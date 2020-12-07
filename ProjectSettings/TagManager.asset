@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - LevelManager
   - KillZone
+  - Enemy_Boss
   layers:
   - Default
   - TransparentFX

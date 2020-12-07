@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,10 +11,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject victoryScreen;
     [SerializeField] GameObject gameOverScreen;
     LevelManager lManager;
+
     float timer;
     int liveEnemies;
     public static GameManager instance;
     int score;
+    bool bossKilled = false;
+    public enum SceneType
+    {
+        Regular, Boss
+    }
+    public SceneType sceneType;
     void Awake()
     {
         instance = this;
@@ -28,26 +33,35 @@ public class GameManager : MonoBehaviour
         lManager = FindObjectOfType<LevelManager>();
         EnemyShip.onDestroy += DestroyEnemy;
         EnemyShip.killedByPlayer += EnemyKilledByPlayer;
+        EnemyShip.bossDeath += OnBossKilled;
         PlayerController.gameOver += GameOver;
         score = DataManager.instance.GetScore();
     }
 
     void Update()
     {
-        if (timer >= timeToSpawn)
+        switch (sceneType)
         {
-            if (enemyCount > 0)
-            {
-                Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
-                enemyCount--;
-                liveEnemies++;
-                timer = 0;
-            }
-        }
-        if(enemyCount<=0 && liveEnemies <= 0)
-        {
-            DataManager.instance.SetScore(score);
-            Victory();
+            case SceneType.Regular:
+                if (timer >= timeToSpawn)
+                {
+                    if (enemyCount > 0)
+                    {
+                        Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
+                        enemyCount--;
+                        liveEnemies++;
+                        timer = 0;
+                    }
+                }
+                if (enemyCount <= 0 && liveEnemies <= 0)
+                {
+                    DataManager.instance.SetScore(score);
+                    Victory();
+                }
+                break;
+            case SceneType.Boss:
+                if(bossKilled) StartCoroutine(OnBossDeath(3));
+                break;
         }
         timer += Time.deltaTime;
     }
@@ -60,6 +74,10 @@ public class GameManager : MonoBehaviour
         liveEnemies--;
         score += 250;
     }
+    void OnBossKilled(EnemyShip es)
+    {
+        bossKilled = true;
+    }
     void GameOver(PlayerController pc)
     {
         gameOverScreen.SetActive(true);
@@ -67,8 +85,8 @@ public class GameManager : MonoBehaviour
     }
     void Victory()
     {
-        victoryScreen.SetActive(true);
         Time.timeScale = 0;
+        victoryScreen.SetActive(true);
     }
     public int GetScore()
     {
@@ -78,8 +96,15 @@ public class GameManager : MonoBehaviour
     {
         EnemyShip.onDestroy -= DestroyEnemy;
         EnemyShip.killedByPlayer -= EnemyKilledByPlayer;
+        EnemyShip.bossDeath -= OnBossKilled;
         PlayerController.gameOver -= GameOver;
         instance = null;
+    }
+    IEnumerator OnBossDeath(float time)
+    {
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(time);
+        Victory();
     }
 
 }

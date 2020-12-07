@@ -5153,11 +5153,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0e9c847bdac0542b6487b9bb8cf09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 7377860637182731761}
+  gunMid: {fileID: 7377860637182731761}
+  gunLeft: {fileID: 0}
+  gunRight: {fileID: 0}
   bullet: {fileID: 5003715092121992825, guid: 945f0999f651181469c742cfee6b55aa, type: 3}
+  bulletParabole: {fileID: 0}
   muzzle: {fileID: 3366708579526132301}
   speed: 3.5
   parabolicMagnitude: 3
+  hp: 50
   type: 1
 --- !u!50 &465649533
 Rigidbody2D:
