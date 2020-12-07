@@ -1086,10 +1086,11 @@ MonoBehaviour:
   killCount: 0
   timeToSpawn: 1.5
   enemies:
-  - {fileID: 5264591928740180450, guid: 2ddc7d9d24461d34e9168689cf20dac8, type: 3}
+  - {fileID: 5264591928740180450, guid: 49025d13f45cf3441a82b9d97d227377, type: 3}
   - {fileID: 5264591928740180450, guid: 49025d13f45cf3441a82b9d97d227377, type: 3}
   victoryScreen: {fileID: 451668265}
   gameOverScreen: {fileID: 1652836031}
+  sceneType: 0
 --- !u!1 &373267712
 GameObject:
   m_ObjectHideFlags: 0
