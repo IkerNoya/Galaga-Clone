@@ -19,10 +19,9 @@ public class EnemyShip : MonoBehaviour
     Animator anim;
     public enum Type
     {
-       Common, Agile, MiniBoss, Boss
+       Common, Agile, MiniBoss, MidBoss, LateBoss
     }
     public Type type;
-
     GameObject player;
     BoxCollider2D collider;
 
@@ -53,7 +52,7 @@ public class EnemyShip : MonoBehaviour
         rightScreenPos = cam.ViewportToWorldPoint(Vector3.right).x;
         leftightScreenPos = cam.ViewportToWorldPoint(Vector3.zero).x;
         player = GameObject.FindGameObjectWithTag("Player");
-        if (type == Type.Boss)
+        if (type == Type.MidBoss || type == Type.LateBoss)
             direction = new Vector3(1, 1, 0);
     }
     void Update()
@@ -81,7 +80,7 @@ public class EnemyShip : MonoBehaviour
                 break;
             case Type.MiniBoss:
                 break;
-            case Type.Boss:
+            case Type.MidBoss:
                 if (transform.position.x + colliderHalfWidth> rightScreenPos)
                 {
                     direction = new Vector3(-1, 1, 0);
@@ -107,6 +106,29 @@ public class EnemyShip : MonoBehaviour
                     }
                 }
                 break;
+            case Type.LateBoss:
+                if (transform.position.x + colliderHalfWidth > rightScreenPos)
+                {
+                    direction = new Vector3(-1, 1, 0);
+                }
+                else if (transform.position.x - colliderHalfWidth < leftightScreenPos)
+                {
+                    direction = new Vector3(1, 1, 0);
+                }
+                transform.position += direction * speed * Time.deltaTime;
+                if (timer >= bossParaboleTimeLimit)
+                {
+                    timer = 0;
+                    bulletParabole.GetComponent<Bullet>().SetUser(Bullet.User.boss);
+                    bullet.GetComponent<Bullet>().SetUser(Bullet.User.enemy);
+                    muzzle.Play();
+                    bossParaboleTimeLimit = UnityEngine.Random.Range(0, 1.5f);
+                    Instantiate(bulletParabole, gunMid.transform.position, Quaternion.identity);
+                    Instantiate(bulletParabole, gunLeft.transform.position, Quaternion.identity);
+                    Instantiate(bulletParabole, gunRight.transform.position, Quaternion.identity);
+                    
+                }
+                break;
             default:
                 break;
         }
@@ -118,24 +140,25 @@ public class EnemyShip : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet") && collision.gameObject.GetComponent<Bullet>().GetUser() == Bullet.User.player)
         {
             hp -= damage;
-            if (type != Type.Boss)
-                StartCoroutine(FlashColors());
-            else
+            if (type == Type.MidBoss || type == Type.LateBoss)
                 StartCoroutine(FlashColorsBoss(1));
+            else
+                StartCoroutine(FlashColors());
+
             if (hp <= 0)
             {
-                if (type != Type.Boss)
-                {
-                    Destroy(gameObject);
-                    killedByPlayer?.Invoke(this);
-                }
-                else
+                if(type == Type.MidBoss || type == Type.LateBoss)
                 {
                     isDead = true;
                     if(anim!=null)
                         anim.SetBool("expl", true);
                     bossDeath?.Invoke(this);
                     StartCoroutine(WaitForExplotion(2));
+                }
+                else
+                {
+                    Destroy(gameObject);
+                    killedByPlayer?.Invoke(this);
                 }
             }
             Destroy(collision.gameObject);
