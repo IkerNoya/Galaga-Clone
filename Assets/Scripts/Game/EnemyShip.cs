@@ -79,6 +79,7 @@ public class EnemyShip : MonoBehaviour
                 transform.position += direction * speed * Time.deltaTime;
                 break;
             case Type.MiniBoss:
+                // testear si es necesario agregar o no minijefes
                 break;
             case Type.MidBoss:
                 if (transform.position.x + colliderHalfWidth> rightScreenPos)
