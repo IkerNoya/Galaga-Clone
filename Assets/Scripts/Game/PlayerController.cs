@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     float colliderHalfWidth;
     float colliderHalfHeight;
     float rightScreenPos;
-    float leftightScreenPos;
+    float leftScreenPos;
     float topScreenPos;
     float bottomScreenPos;
 
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
             colliderHalfHeight = collider.size.y / 2;
         }
         rightScreenPos = cam.ViewportToWorldPoint(Vector3.right).x;
-        leftightScreenPos = cam.ViewportToWorldPoint(Vector3.zero).x;
+        leftScreenPos = cam.ViewportToWorldPoint(Vector3.zero).x;
         maxLives = lives;
     }
     void Update()
@@ -63,17 +63,13 @@ public class PlayerController : MonoBehaviour
         Inputs();
 
         //limit movement in x
-        if(transform.position.x - colliderHalfWidth > rightScreenPos)
+        if(transform.position.x + colliderHalfWidth > rightScreenPos)
         {
-            transform.position = new Vector3(leftightScreenPos - colliderHalfWidth, transform.position.y, transform.position.z);
-            trailLeft.Clear();
-            trailRight.Clear();
+            transform.position = new Vector3(rightScreenPos - colliderHalfWidth, transform.position.y, transform.position.z);
         }
-        else if(transform.position.x + colliderHalfWidth < leftightScreenPos)
+        else if(transform.position.x - colliderHalfWidth < leftScreenPos)
         {
-            transform.position = new Vector3(rightScreenPos + colliderHalfWidth, transform.position.y, transform.position.z);
-            trailLeft.Clear();
-            trailRight.Clear();
+            transform.position = new Vector3(leftScreenPos + colliderHalfWidth, transform.position.y, transform.position.z);
         }
         //limit movement in y
         if (transform.position.y + colliderHalfHeight >= topScreenPos)
@@ -110,7 +106,8 @@ public class PlayerController : MonoBehaviour
             if (lives <= 0)
                 gameOver?.Invoke(this);
             StartCoroutine(FlashColors(5));
-            Destroy(collision.gameObject);
+            if(collision.gameObject.CompareTag("Bullet"))
+                Destroy(collision.gameObject);
         }
     }
     public float currentHealthPercentage(int value)

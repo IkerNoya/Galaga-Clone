@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     LevelManager lManager;
 
     float timer;
-    int liveEnemies;
     public static GameManager instance;
     int score;
     bool bossKilled = false;
@@ -31,7 +30,6 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         lManager = FindObjectOfType<LevelManager>();
-        EnemyShip.onDestroy += DestroyEnemy;
         EnemyShip.killedByPlayer += EnemyKilledByPlayer;
         EnemyShip.bossDeath += OnBossKilled;
         PlayerController.gameOver += GameOver;
@@ -48,12 +46,10 @@ public class GameManager : MonoBehaviour
                     if (enemyCount > 0)
                     {
                         Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
-                        enemyCount--;
-                        liveEnemies++;
                         timer = 0;
                     }
                 }
-                if (enemyCount <= 0 && liveEnemies <= 0)
+                if (enemyCount <= 0)
                 {
                     DataManager.instance.SetScore(score);
                     Victory();
@@ -65,13 +61,9 @@ public class GameManager : MonoBehaviour
         }
         timer += Time.deltaTime;
     }
-    void DestroyEnemy(EnemyShip es)
-    {
-        liveEnemies--;
-    }
     void EnemyKilledByPlayer(EnemyShip es)
     {
-        liveEnemies--;
+        enemyCount--;
         score += 250;
     }
     void OnBossKilled(EnemyShip es)
@@ -94,7 +86,6 @@ public class GameManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        EnemyShip.onDestroy -= DestroyEnemy;
         EnemyShip.killedByPlayer -= EnemyKilledByPlayer;
         EnemyShip.bossDeath -= OnBossKilled;
         PlayerController.gameOver -= GameOver;
