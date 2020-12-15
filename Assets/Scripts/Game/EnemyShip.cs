@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Threading;
 using UnityEngine;
+using TMPro;
+
 
 public class EnemyShip : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
     [SerializeField] int hp;
+    [SerializeField] TextMeshProUGUI hpText;
     public static event Action<EnemyShip> onDestroy;
     public static event Action<EnemyShip> killedByPlayer;
     public static event Action<EnemyShip> bossDeath;
@@ -43,6 +46,7 @@ public class EnemyShip : MonoBehaviour
 
 
     int damage = 50;
+    int initialHP;
 
     bool isDead = false;
     bool canShoot = true;
@@ -53,6 +57,7 @@ public class EnemyShip : MonoBehaviour
 
     void Start()
     {
+        initialHP = hp;
         anim = GetComponent<Animator>();
         cam = Camera.main;
         collider = GetComponent<BoxCollider2D>();
@@ -121,6 +126,7 @@ public class EnemyShip : MonoBehaviour
                     StartCoroutine(ShootCooldown(shootCooldownMid));
                 }
                 shootTimer += Time.deltaTime;
+                hpText.text = "BOSS: " + HPtoPercentage(hp) + "%";
                 break;
 
             case Type.LateBoss:
@@ -151,6 +157,7 @@ public class EnemyShip : MonoBehaviour
                     StartCoroutine(ShootCooldown(shootCooldownLate));
                 }
                 shootTimer += Time.deltaTime;
+                hpText.text = "BOSS: " + HPtoPercentage(hp) + "%";
                 break;
 
             default:
@@ -158,6 +165,10 @@ public class EnemyShip : MonoBehaviour
         }
         timerParabolicBullet += Time.deltaTime;
         timer += Time.deltaTime;
+    }
+    int HPtoPercentage(int hp)
+    {
+        return (hp * 100) / initialHP;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
