@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,11 +13,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] enemies;
     [SerializeField] GameObject victoryScreen;
     [SerializeField] GameObject gameOverScreen;
+    [SerializeField] List<GameObject> liveEnemies;
     LevelManager lManager;
 
     float timer;
     public static GameManager instance;
     int score;
+    int index = 0;
     bool bossKilled = false;
     public enum SceneType
     {
@@ -24,32 +29,64 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-    }
 
+    }
     void Start()
     {
         Time.timeScale = 1;
         lManager = FindObjectOfType<LevelManager>();
+        EnemyShip.onDestroy += OnEnemyDestroy;
         EnemyShip.killedByPlayer += EnemyKilledByPlayer;
         EnemyShip.bossDeath += OnBossKilled;
         PlayerController.gameOver += GameOver;
         score = DataManager.instance.GetScore();
+        if(sceneType == SceneType.Regular)
+        {
+            for (int i = 0; i < enemyCount; i++)
+            {
+                GameObject go = Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
+                liveEnemies.Add(go);
+                liveEnemies[i].SetActive(false);
+            }
+        }
+
     }
 
     void Update()
     {
+        Debug.Log(index);
         switch (sceneType)
         {
             case SceneType.Regular:
+                for (int i = 0; i < liveEnemies.Count; i++)
+                {
+                    if (liveEnemies[i] == null)
+                    {
+                        liveEnemies.RemoveAt(i);
+                    }
+                }
+
+
+                if(index>liveEnemies.Count-1) index = 0;
+
                 if (timer >= timeToSpawn)
                 {
-                    if (enemyCount > 0)
+                    if (liveEnemies.Count>0)
                     {
-                        Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
+                        for(int i = 0; i<liveEnemies.Count; i++)
+                        {
+                            if (!liveEnemies[i].activeSelf)
+                            {
+                                liveEnemies[i].transform.position = lManager.Spawners[Random.Range(0, lManager.Spawners.Count)].position;
+                                liveEnemies[i].SetActive(true);
+                                break;
+                            }
+                        }
+                        index++;
                         timer = 0;
                     }
                 }
-                if (enemyCount <= 0)
+                if (liveEnemies.Count <= 0)
                 {
                     DataManager.instance.SetScore(score);
                     Victory();
@@ -63,8 +100,18 @@ public class GameManager : MonoBehaviour
     }
     void EnemyKilledByPlayer(EnemyShip es)
     {
-        enemyCount--;
         score += 250;
+
+    }
+    void OnEnemyDestroy(EnemyShip es)
+    {
+        for (int i = 0; i < liveEnemies.Count; i++)
+        {
+            if (!liveEnemies[i].activeSelf)
+            {
+                liveEnemies[i].transform.position = lManager.Spawners[Random.Range(0, lManager.Spawners.Count)].position;
+            }
+        }
     }
     void OnBossKilled(EnemyShip es)
     {
@@ -86,6 +133,7 @@ public class GameManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        EnemyShip.onDestroy -= OnEnemyDestroy;
         EnemyShip.killedByPlayer -= EnemyKilledByPlayer;
         EnemyShip.bossDeath -= OnBossKilled;
         PlayerController.gameOver -= GameOver;

@@ -13,6 +13,7 @@ public class EnemyShip : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float parabolicMagnitude;
     [SerializeField] int hp;
+    public static event Action<EnemyShip> onDestroy;
     public static event Action<EnemyShip> killedByPlayer;
     public static event Action<EnemyShip> bossDeath;
     Animator anim;
@@ -170,7 +171,8 @@ public class EnemyShip : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("KillZone"))
         {
-            Destroy(gameObject);
+            onDestroy?.Invoke(this);
+            gameObject.SetActive(false);
         }
     }
     IEnumerator FlashColors()
