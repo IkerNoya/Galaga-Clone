@@ -1082,7 +1082,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8861d6e989d86ae4f879e322d37cf5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 7
+  commonEnemyCount: 0
+  erraticEnemyCount: 12
   killCount: 0
   timeToSpawn: 1.5
   enemies:

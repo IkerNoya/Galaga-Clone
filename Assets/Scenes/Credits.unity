@@ -661,12 +661,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ASSETS USED:
-
-    -2D Pixel Spaceships by EVPO Games
-
-    -Space Shooter
-    FREE by DinV Studio'
+  m_text: "NOMBRE: Federico Castillo\nCARRERA: USAL - Arte y DIse\xF1o Digital\nMATERIA:
+    Desarrollo de Videojuegos I\nPROFESOR: Eduardo Ortega\n\nASSETS:\n-2D Pixel Spaceships
+    por EVPO Games\n-Space Shooter FREE por DinV Studio"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -693,8 +690,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

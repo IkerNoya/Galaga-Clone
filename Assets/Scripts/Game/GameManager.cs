@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] int enemyCount;
+    [SerializeField] int commonEnemyCount;
+    [SerializeField] int erraticEnemyCount;
     [SerializeField] int killCount;
     [SerializeField] float timeToSpawn;
     [SerializeField] GameObject[] enemies;
@@ -42,9 +43,15 @@ public class GameManager : MonoBehaviour
         score = DataManager.instance.GetScore();
         if(sceneType == SceneType.Regular)
         {
-            for (int i = 0; i < enemyCount; i++)
+            for (int i = 0; i < commonEnemyCount; i++)
             {
-                GameObject go = Instantiate(enemies[Random.Range(0, enemies.Length)], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
+                GameObject go = Instantiate(enemies[0], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
+                liveEnemies.Add(go);
+                liveEnemies[i].SetActive(false);
+            }
+            for (int i = 0; i < erraticEnemyCount; i++)
+            {
+                GameObject go = Instantiate(enemies[1], lManager.Spawners[Random.Range(0, lManager.Spawners.Count)]);
                 liveEnemies.Add(go);
                 liveEnemies[i].SetActive(false);
             }
@@ -54,7 +61,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(index);
         switch (sceneType)
         {
             case SceneType.Regular:

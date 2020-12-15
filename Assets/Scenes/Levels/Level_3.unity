@@ -1082,7 +1082,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8861d6e989d86ae4f879e322d37cf5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 25
+  commonEnemyCount: 6
+  erraticEnemyCount: 6
   killCount: 0
   timeToSpawn: 1.5
   enemies:
@@ -1090,6 +1091,8 @@ MonoBehaviour:
   - {fileID: 5264591928740180450, guid: 49025d13f45cf3441a82b9d97d227377, type: 3}
   victoryScreen: {fileID: 451668265}
   gameOverScreen: {fileID: 1652836031}
+  liveEnemies: []
+  sceneType: 0
 --- !u!1 &373267712
 GameObject:
   m_ObjectHideFlags: 0

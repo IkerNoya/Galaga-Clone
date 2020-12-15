@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 public class EnemyShip : MonoBehaviour
@@ -28,15 +29,23 @@ public class EnemyShip : MonoBehaviour
     float timer = 0;
     float timerParabolicBullet = 0;
     float timeLimit = 1.5f;
-    float bossTimeLimit = 1;
+    float bossTimeLimit = 0.5f;
     float bossParaboleTimeLimit = 1.5f;
     float colliderHalfWidth;
     float rightScreenPos;
     float leftightScreenPos;
+    float shootCooldownMid = 5;
+    float shootCooldownLate = 3;
+    float shootTimer = 0;
+    float cooldownTimer = 0;
+    float shootLateLimit = 8;
+    float shootMidLimit = 6;
+
 
     int damage = 50;
 
     bool isDead = false;
+    bool canShoot = true;
 
     Vector3 direction;
     Camera cam;
@@ -91,7 +100,7 @@ public class EnemyShip : MonoBehaviour
                     direction = new Vector3(1, 1, 0);
                 }
                 transform.position += direction * speed * Time.deltaTime;
-                if (timer >= bossTimeLimit)
+                if (timer >= bossTimeLimit && canShoot)
                 {
                     timer = 0;
                     bulletParabole.GetComponent<Bullet>().SetUser(Bullet.User.boss);
@@ -106,7 +115,14 @@ public class EnemyShip : MonoBehaviour
                         Instantiate(bulletParabole, gunRight.transform.position, Quaternion.identity);
                     }
                 }
+                if (shootTimer >= shootMidLimit)
+                {
+                    canShoot = false;
+                    StartCoroutine(ShootCooldown(shootCooldownMid));
+                }
+                shootTimer += Time.deltaTime;
                 break;
+
             case Type.LateBoss:
                 if (transform.position.x + colliderHalfWidth > rightScreenPos)
                 {
@@ -117,7 +133,7 @@ public class EnemyShip : MonoBehaviour
                     direction = new Vector3(1, 1, 0);
                 }
                 transform.position += direction * speed * Time.deltaTime;
-                if (timer >= bossParaboleTimeLimit)
+                if (timer >= bossParaboleTimeLimit && canShoot)
                 {
                     timer = 0;
                     bulletParabole.GetComponent<Bullet>().SetUser(Bullet.User.boss);
@@ -129,7 +145,14 @@ public class EnemyShip : MonoBehaviour
                     Instantiate(bulletParabole, gunRight.transform.position, Quaternion.identity);
                     
                 }
+                if (shootTimer >= shootLateLimit)
+                {
+                    canShoot = false;
+                    StartCoroutine(ShootCooldown(shootCooldownLate));
+                }
+                shootTimer += Time.deltaTime;
                 break;
+
             default:
                 break;
         }
@@ -203,5 +226,12 @@ public class EnemyShip : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
+    }
+    IEnumerator ShootCooldown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        canShoot = true;
+        shootTimer = 0;
+        yield return null;
     }
 }
