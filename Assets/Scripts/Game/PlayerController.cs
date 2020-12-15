@@ -63,13 +63,17 @@ public class PlayerController : MonoBehaviour
         Inputs();
 
         //limit movement in x
-        if(transform.position.x + colliderHalfWidth > rightScreenPos)
+        if(transform.position.x > rightScreenPos)
         {
-            transform.position = new Vector3(rightScreenPos - colliderHalfWidth, transform.position.y, transform.position.z);
+            transform.position = new Vector3(leftScreenPos, transform.position.y, transform.position.z);
+            trailLeft.Clear();
+            trailRight.Clear();
         }
-        else if(transform.position.x - colliderHalfWidth < leftScreenPos)
+        else if(transform.position.x < leftScreenPos)
         {
-            transform.position = new Vector3(leftScreenPos + colliderHalfWidth, transform.position.y, transform.position.z);
+            transform.position = new Vector3(rightScreenPos , transform.position.y, transform.position.z); 
+            trailLeft.Clear();
+            trailRight.Clear();
         }
         //limit movement in y
         if (transform.position.y + colliderHalfHeight >= topScreenPos)

@@ -5137,6 +5137,8 @@ MonoBehaviour:
   gunRight: {fileID: 7925252652453920353}
   muzzleLeft: {fileID: 6884272568539006337}
   muzzleRight: {fileID: 4101625419201986157}
+  trailLeft: {fileID: 1469457321379767507}
+  trailRight: {fileID: 5642619639497818976}
 --- !u!61 &7727117711298921205
 BoxCollider2D:
   m_ObjectHideFlags: 0
